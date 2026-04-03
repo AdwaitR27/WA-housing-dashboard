@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>WA Housing Research Insights — Perth Opportunity Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0d1f35;
+  --navy-mid: #142840;
+  --blue: #1a5ab8;
+  --blue-light: #3478d4;
+  --teal: #0c7a6b;
+  --teal-light: #1aaa94;
+  --gold: #c9913a;
+  --gold-light: #e8b05a;
+  --surface: #f4f7fc;
+  --card: #ffffff;
+  --border: #dce6f2;
+  --text: #0d1f35;
+  --muted: #5a6e84;
+  --soft: #eaf1fb;
+  --warn-bg: #fff8ee;
+  --warn-border: #f0d5a0;
+  --success-bg: #edfaf6;
+  --success-border: #a0d9cb;
+  --radius-xl: 24px;
+  --radius-lg: 18px;
+  --radius-md: 12px;
+  --shadow-card: 0 4px 24px rgba(13,31,53,.07), 0 1px 4px rgba(13,31,53,.04);
+  --shadow-hero: 0 20px 60px rgba(13,31,53,.22);
+  --transition: 0.28s cubic-bezier(0.4,0,0.2,1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── LAYOUT ── */
+.page { max-width: 1320px; margin: 0 auto; padding: 32px 28px 56px; }
+
+.grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 20px; margin-top: 22px; }
+.span-12 { grid-column: span 12; }
+.span-8  { grid-column: span 8; }
+.span-7  { grid-column: span 7; }
+.span-6  { grid-column: span 6; }
+.span-5  { grid-column: span 5; }
+.span-4  { grid-column: span 4; }
+.span-3  { grid-column: span 3; }
+
+/* ── HERO ── */
+.hero {
+  background: linear-gradient(145deg, var(--navy) 0%, #1a3a60 55%, #143d70 100%);
+  color: white;
+  border-radius: var(--radius-xl);
+  padding: 42px 44px 40px;
+  box-shadow: var(--shadow-hero);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -80px; right: -80px;
+  width: 420px; height: 420px;
+  background: radial-gradient(circle, rgba(52,120,212,.25) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -60px; left: 30%;
+  width: 320px; height: 320px;
+  background: radial-gradient(circle, rgba(12,122,107,.18) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hero-eyebrow::before {
+  content: '';
+  display: block;
+  width: 28px; height: 2px;
+  background: var(--gold-light);
+  border-radius: 2px;
+}
+
+.hero h1 {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 44px;
+  line-height: 1.1;
+  margin-bottom: 16px;
+  max-width: 680px;
+  font-weight: 400;
+}
+
+.hero h1 em {
+  font-style: italic;
+  color: rgba(255,255,255,.75);
+}
+
+.hero-desc {
+  color: rgba(255,255,255,.82);
+  font-size: 14.5px;
+  max-width: 780px;
+  line-height: 1.65;
+  font-weight: 300;
+}
+
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-top: 30px;
+  position: relative;
+  z-index: 1;
+}
+
+.kpi {
+  background: rgba(255,255,255,.09);
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  backdrop-filter: blur(8px);
+  transition: background var(--transition), transform var(--transition);
+}
+
+.kpi:hover {
+  background: rgba(255,255,255,.14);
+  transform: translateY(-2px);
+}
+
+.kpi .kpi-label {
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: rgba(255,255,255,.65);
+  margin-bottom: 8px;
+}
+
+.kpi .kpi-value {
+  font-family: 'DM Serif Display', serif;
+  font-size: 34px;
+  line-height: 1;
+  color: white;
+}
+
+.kpi .kpi-sub {
+  font-size: 11.5px;
+  color: rgba(255,255,255,.5);
+  margin-top: 4px;
+}
+
+.meta-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 22px;
+  position: relative;
+  z-index: 1;
+}
+
+.badge {
+  background: rgba(255,255,255,.1);
+  border: 1px solid rgba(255,255,255,.16);
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  color: rgba(255,255,255,.8);
+  font-weight: 400;
+  transition: background var(--transition);
+}
+
+.badge:hover { background: rgba(255,255,255,.16); }
+
+/* ── CARD ── */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+  padding: 26px;
+  transition: box-shadow var(--transition), transform var(--transition);
+  animation: fadeUp .5s ease both;
+}
+
+.card:hover {
+  box-shadow: 0 8px 36px rgba(13,31,53,.10), 0 2px 6px rgba(13,31,53,.05);
+}
+
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(16px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+/* stagger children */
+.grid > *:nth-child(1) { animation-delay:.04s; }
+.grid > *:nth-child(2) { animation-delay:.08s; }
+.grid > *:nth-child(3) { animation-delay:.12s; }
+.grid > *:nth-child(4) { animation-delay:.16s; }
+.grid > *:nth-child(5) { animation-delay:.20s; }
+.grid > *:nth-child(6) { animation-delay:.24s; }
+.grid > *:nth-child(7) { animation-delay:.28s; }
+.grid > *:nth-child(8) { animation-delay:.32s; }
+.grid > *:nth-child(9) { animation-delay:.36s; }
+
+/* ── CARD HEADER ── */
+.card-label {
+  font-size: 10.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--blue);
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-label::before {
+  content: '';
+  display: block;
+  width: 18px; height: 2px;
+  background: var(--blue);
+  border-radius: 2px;
+}
+
+.card h2 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 1.2;
+  margin-bottom: 6px;
+}
+
+.card h3 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 17px;
+  font-weight: 400;
+  margin-bottom: 8px;
+}
+
+.small {
+  font-size: 13.5px;
+  color: var(--muted);
+  line-height: 1.65;
+  font-weight: 300;
+}
+
+/* ── DIVIDER ── */
+.divider { width: 100%; height: 1px; background: var(--border); margin: 16px 0; }
+
+/* ── TABLE ── */
+table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 13.5px; }
+th {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: var(--muted);
+  font-weight: 500;
+  padding: 10px 10px;
+  border-bottom: 2px solid var(--border);
+  text-align: left;
+}
+td {
+  padding: 11px 10px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  line-height: 1.5;
+}
+tr:last-child td { border-bottom: none; }
+tbody tr { transition: background var(--transition); }
+tbody tr:hover { background: var(--soft); }
+
+/* ── CALLOUT BLOCKS ── */
+.callout {
+  background: var(--warn-bg);
+  border: 1px solid var(--warn-border);
+  border-left: 4px solid var(--gold);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  font-size: 13.5px;
+  margin-top: 14px;
+  line-height: 1.6;
+}
+
+.callout-blue {
+  background: var(--soft);
+  border: 1px solid #c5d9f5;
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  font-size: 13.5px;
+  margin-top: 14px;
+  line-height: 1.6;
+}
+
+.callout-teal {
+  background: var(--success-bg);
+  border: 1px solid var(--success-border);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
+/* ── TABS ── */
+.tag-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+.tag {
+  background: var(--soft);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 6px 13px;
+  font-size: 12.5px;
+  color: var(--muted);
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+/* ── BUTTONS ── */
+.btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+button {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--soft);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: var(--radius-md);
+  padding: 10px 18px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+button:hover {
+  background: #dde8f7;
+  border-color: #b0c9e8;
+}
+button.active {
+  background: var(--navy);
+  color: white;
+  border-color: var(--navy);
+  box-shadow: 0 4px 14px rgba(13,31,53,.22);
+}
+
+/* ── CONTROLS ── */
+.controls-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 18px; }
+.control-block {
+  background: var(--soft);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 14px;
+}
+label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+input[type=range] {
+  width: 100%;
+  accent-color: var(--blue);
+  cursor: pointer;
+}
+.control-value {
+  font-size: 13px;
+  color: var(--blue);
+  font-weight: 600;
+  margin-top: 5px;
+}
+select {
+  width: 100%;
+  padding: 9px 11px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: white;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13.5px;
+  color: var(--text);
+  cursor: pointer;
+  outline: none;
+  transition: border-color var(--transition);
+}
+select:focus { border-color: var(--blue); }
+
+/* ── RECOMMENDATION BOX ── */
+#recommendationBox {
+  background: linear-gradient(135deg, var(--soft) 0%, #f0f6ff 100%);
+  border: 1px solid #c5d9f5;
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  margin-top: 16px;
+}
+#recommendationBox .rec-headline {
+  font-family: 'DM Serif Display', serif;
+  font-size: 19px;
+  color: var(--navy);
+  margin-bottom: 10px;
+  line-height: 1.25;
+}
+#recommendationBox .rec-section {
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.65;
+}
+#recommendationBox .rec-section strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* ── SCENARIO ── */
+.scenario-layout { display: grid; grid-template-columns: 1fr 1.6fr; gap: 16px; margin-top: 16px; }
+.scenario-btns { display: flex; flex-direction: column; gap: 10px; }
+.scene-btn {
+  text-align: left;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 16px 18px;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.scene-btn:hover {
+  border-color: #b0c9e8;
+  background: var(--soft);
+}
+.scene-btn.active {
+  border-color: var(--blue);
+  background: var(--soft);
+  box-shadow: 0 0 0 3px rgba(26,90,184,.1);
+}
+.scene-btn strong { display: block; font-size: 14px; color: var(--text); margin-bottom: 4px; }
+.scene-btn span { display: block; font-size: 12px; color: var(--muted); line-height: 1.45; font-weight: 300; }
+.scene-output {
+  background: linear-gradient(155deg, #f7fbff 0%, #eef5ff 100%);
+  border: 1px solid #d4e5fc;
+  border-radius: var(--radius-xl);
+  padding: 22px 24px;
+  animation: fadeIn .3s ease;
+}
+@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+.scene-kicker {
+  font-size: 10.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--blue);
+  margin-bottom: 6px;
+}
+.scene-output h3 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--navy);
+  margin-bottom: 10px;
+}
+.scene-output .outcome {
+  font-size: 13.5px;
+  color: var(--muted);
+  line-height: 1.65;
+  margin-bottom: 14px;
+  font-weight: 300;
+}
+.pills { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 14px; }
+.pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 500;
+  border: 1px solid var(--border);
+  background: white;
+  color: var(--muted);
+}
+.scene-section { margin-top: 12px; }
+.scene-section strong {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--muted);
+  display: block;
+  margin-bottom: 7px;
+}
+.scene-section ul { list-style: none; padding: 0; }
+.scene-section li {
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.55;
+  padding: 5px 0 5px 18px;
+  position: relative;
+  border-bottom: 1px solid rgba(0,0,0,.04);
+}
+.scene-section li:last-child { border-bottom: none; }
+.scene-section li::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 14px;
+  width: 7px; height: 7px;
+  background: var(--blue-light);
+  border-radius: 50%;
+  opacity: .5;
+}
+
+/* ── NOTICE ── */
+.notice {
+  background: var(--soft);
+  border: 1px solid #c5d9f5;
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  font-size: 13.5px;
+  line-height: 1.6;
+  margin-bottom: 4px;
+}
+
+/* ── FOOTER ── */
+.footer-note {
+  margin-top: 24px;
+  font-size: 12px;
+  color: #8fa0b4;
+  line-height: 1.7;
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+}
+
+/* ── RANK TABLE SCORE BADGE ── */
+.score-badge {
+  display: inline-block;
+  background: var(--navy);
+  color: white;
+  border-radius: 8px;
+  padding: 3px 10px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1100px) {
+  .span-8, .span-7, .span-6, .span-5, .span-4, .span-3 { grid-column: span 12; }
+  .kpis { grid-template-columns: repeat(2, 1fr); }
+  .controls-grid { grid-template-columns: 1fr; }
+  .scenario-layout { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .hero { padding: 28px 22px; }
+  .hero h1 { font-size: 30px; }
+  .kpis { grid-template-columns: 1fr 1fr; }
+  .page { padding: 18px 16px 40px; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-eyebrow">Portfolio Case Study · Perth WA</div>
+    <h1>WA Housing Research<br><em>Insights Dashboard</em></h1>
+    <p class="hero-desc">An interview-style advisory dashboard for a Research Analyst role — translating Perth market signals into site strategy, suburb selection, and affordability stories. Structure inspired by REIWA's market-insights format, reworked into a decision-support tool that answers client questions rather than only describing the market.</p>
+    <div class="kpis">
+      <div class="kpi">
+        <div class="kpi-label">Perth Median House Price</div>
+        <div class="kpi-value">$885k</div>
+        <div class="kpi-sub">Market-wide figure</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Median Dwelling Rent</div>
+        <div class="kpi-value">$720<span style="font-size:18px;opacity:.7">pw</span></div>
+        <div class="kpi-sub">Perth, March 2026</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Vacancy Rate</div>
+        <div class="kpi-value">2.2<span style="font-size:18px;opacity:.7">%</span></div>
+        <div class="kpi-sub">Improved from crisis lows</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Population Growth</div>
+        <div class="kpi-value">2.4<span style="font-size:18px;opacity:.7">%</span></div>
+        <div class="kpi-sub">Highest among capitals</div>
+      </div>
+    </div>
+    <div class="meta-row">
+      <div class="badge">Week ending 29 Mar 2026</div>
+      <div class="badge">Landowner strategy + renter/buyer advisory</div>
+      <div class="badge">Built as a portfolio case study</div>
+    </div>
+  </section>
+
+  <!-- RESEARCH NOTES CTA -->
+  <p style="
+    margin-top: 20px;
+    font-size: 13px;
+    color: #5a6e84;
+    text-align: center;
+    letter-spacing: 0.01em;
+  ">
+    📄 Please review the <strong style="color:#0d1f35;">Research Notes</strong> below to view the full written report and a walkthrough of how this dashboard was built.
+  </p>
+
+  <!-- NOTION LINKS BANNER -->
+  <div style="
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-top: 20px;
+    padding: 16px 22px;
+    background: #ffffff;
+    border: 1px solid #dce6f2;
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(13,31,53,.05);
+    flex-wrap: wrap;
+  ">
+    <div style="display:flex;align-items:center;gap:8px;margin-right:4px;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="24" height="24" rx="5" fill="#0d1f35"/>
+        <path d="M6 6.5C6 6.22 6.22 6 6.5 6H14L18 10V17.5C18 17.78 17.78 18 17.5 18H6.5C6.22 18 6 17.78 6 17.5V6.5Z" fill="white"/>
+        <path d="M14 6L18 10H14.5C14.22 10 14 9.78 14 9.5V6Z" fill="#8fa0b4"/>
+      </svg>
+      <span style="font-size:12px;font-weight:600;color:#5a6e84;letter-spacing:.04em;text-transform:uppercase;">Research Notes</span>
+    </div>
+    <a href="https://www.notion.so/337efa52acd881918ec0d359106bd837" target="_blank" rel="noopener" style="
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 16px;
+      background: linear-gradient(135deg, #0d1f35 0%, #1a3a60 100%);
+      color: white;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    " onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="white" stroke-width="2" stroke-linejoin="round"/><polyline points="14 2 14 8 20 8" stroke="white" stroke-width="2" stroke-linejoin="round"/></svg>
+      Research Report
+    </a>
+    <a href="https://www.notion.so/337efa52acd881089d50f3ea8875a39c" target="_blank" rel="noopener" style="
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 16px;
+      background: #f4f7fc;
+      color: #0d1f35;
+      border: 1px solid #dce6f2;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: background 0.2s;
+    " onmouseover="this.style.background='#e4edf8'" onmouseout="this.style.background='#f4f7fc'">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1" stroke="#0d1f35" stroke-width="2"/><rect x="14" y="3" width="7" height="7" rx="1" stroke="#0d1f35" stroke-width="2"/><rect x="3" y="14" width="7" height="7" rx="1" stroke="#0d1f35" stroke-width="2"/><rect x="14" y="14" width="7" height="7" rx="1" stroke="#0d1f35" stroke-width="2"/></svg>
+      How I Built This Dashboard
+    </a>
+    <span style="margin-left:auto;font-size:12px;color:#8fa0b4;font-style:italic;">Adwait Reddy · April 2026</span>
+  </div>
+
+  <div class="grid">
+
+    <!-- 1 MARKET STORY -->
+    <section class="card span-7">
+      <div class="card-label">01 — Market overview</div>
+      <h2>Market Pressure Story</h2>
+      <p class="small">Demand is supported by strong population growth while supply is improving but not fully relieving pressure — keeping prices elevated even as the rental market moves away from its most severe crisis settings.</p>
+      <div id="marketStory" style="margin-top:12px;"></div>
+      <div class="tag-row">
+        <span class="tag">Demand: Perth pop. +2.4%</span>
+        <span class="tag">Supply: WA approvals trending up</span>
+        <span class="tag">Market: listings still below last year</span>
+        <span class="tag">Rental: vacancy stabilising, rents high</span>
+      </div>
+    </section>
+
+    <!-- 2 QUICK INTERPRETATION -->
+    <section class="card span-5">
+      <div class="card-label">02 — Signal interpretation</div>
+      <h2>Quick Read</h2>
+      <table>
+        <thead><tr><th>Signal</th><th>Why it matters</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Population growth outpacing other capitals</strong></td><td>Supports both owner-occupier and rental demand, especially in accessible suburbs.</td></tr>
+          <tr><td><strong>Median house price at $885k</strong></td><td>Detached housing remains expensive, pushing demand toward units, townhouses and infill.</td></tr>
+          <tr><td><strong>Vacancy at 2.2%</strong></td><td>Better than the tightest phase, but still indicates competition in well-located markets.</td></tr>
+          <tr><td><strong>Approvals rising but uneven</strong></td><td>Future supply improving, though not all approvals turn into near-term completions.</td></tr>
+        </tbody>
+      </table>
+      <div class="callout">
+        <strong>Research angle:</strong> the best opportunities sit at the intersection of access, affordability, land potential and tenant depth — not simply "cheap" or "high-growth" suburbs.
+      </div>
+    </section>
+
+    <!-- 3 SUBURB SCATTER -->
+    <section class="card span-8">
+      <div class="card-label">03 — Suburb decision map</div>
+      <h2>Suburb Decision Map</h2>
+      <p class="small">Bubble size = annual sales growth. Switch between client lenses to see how suburb priorities shift by objective. Scores are constructed indices built from the variables in this dashboard to simulate client-specific decision frameworks.</p>
+      <div id="suburbScatter" style="margin-top:10px;"></div>
+      <div class="btn-row" id="lensButtons">
+        <button onclick="setMode('investor', this)" class="active">Investor (Returns)</button>
+        <button onclick="setMode('growth', this)">Growth (Upside)</button>
+        <button onclick="setMode('newcomer', this)">Newcomer (Affordability)</button>
+        <button onclick="setMode('family', this)">Family (Livability)</button>
+        <button onclick="setMode('fifo', this)">FIFO (Access)</button>
+      </div>
+    </section>
+
+    <!-- 4 RANKED SHORTLIST -->
+    <section class="card span-4">
+      <div class="card-label">04 — Ranked shortlist</div>
+      <h2>Top Suburbs</h2>
+      <p class="small" id="rankIntro">Top suburbs when the client values airport access, reasonable rents, and practical liveability.</p>
+      <div id="rankTable" style="margin-top:6px;"></div>
+    </section>
+
+    <!-- 5 SITE STRATEGY -->
+    <section class="card span-6">
+      <div class="card-label">05 — Site strategy explorer</div>
+      <h2>Site Strategy Explorer</h2>
+      <p class="small">A first-pass advisory screen for: <em>"What can we do on this land to maximise return?"</em> Combines lot scale, access, and investor intent. Not a planning determination.</p>
+      <div class="controls-grid">
+        <div class="control-block">
+          <label>Lot size (sqm)</label>
+          <input type="range" id="lotSize" min="250" max="1800" value="700" step="50" oninput="updateSiteStrategy()">
+          <div class="control-value"><span id="lotSizeVal">700</span> sqm</div>
+        </div>
+        <div class="control-block">
+          <label>Frontage (m)</label>
+          <input type="range" id="frontage" min="8" max="30" value="18" step="1" oninput="updateSiteStrategy()">
+          <div class="control-value"><span id="frontageVal">18</span> m</div>
+        </div>
+        <div class="control-block">
+          <label>Distance to train / activity centre</label>
+          <select id="proximity" onchange="updateSiteStrategy()">
+            <option value="inner">Within 800m</option>
+            <option value="mid" selected>800m – 2km</option>
+            <option value="outer">More than 2km</option>
+          </select>
+        </div>
+        <div class="control-block">
+          <label>Investor objective</label>
+          <select id="objective" onchange="updateSiteStrategy()">
+            <option value="yield">Prioritise rental yield</option>
+            <option value="growth" selected>Prioritise capital growth</option>
+            <option value="balance">Balanced return</option>
+          </select>
+        </div>
+      </div>
+      <div id="recommendationBox"></div>
+    </section>
+
+    <!-- 6 OUTLOOK -->
+    <section class="card span-6">
+      <div class="card-label">06 — 2026 outlook</div>
+      <h2>2026 Outlook Scenarios</h2>
+      <p class="small">Scenario lines are illustrative, anchored to REIWA's 2026 guidance: house prices up more than 10%, unit prices up 15–20%, rents likely stable with similar growth to 2025.</p>
+      <div id="outlookChart" style="margin-top:10px;"></div>
+    </section>
+
+    <!-- 7 AFFORDABILITY -->
+    <section class="card span-6">
+      <div class="card-label">07 — Affordability check</div>
+      <h2>Newcomer Affordability</h2>
+      <p class="small">Suburb median rents compared against two income anchors — National Minimum Wage and full-time adult average weekly earnings — using the 30% rent-to-income rule.</p>
+      <div id="affordabilityChart" style="margin-top:10px;"></div>
+    </section>
+
+    <!-- 8 CLIENT Q&A -->
+    <section class="card span-6">
+      <div class="card-label">08 — Advisory synthesis</div>
+      <h2>What Should a Client Do?</h2>
+      <table>
+        <thead><tr><th>Client question</th><th>Research answer</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Maximise land return</strong></td><td>Screen for access first. Sites near train precincts or activity centres are strongest candidates for denser forms and product diversification.</td></tr>
+          <tr><td><strong>Where will prices/rents go?</strong></td><td>Base case remains upward in 2026, but at different speeds by product and location. Units and well-located infill still have structural support.</td></tr>
+          <tr><td><strong>Where should a FIFO worker live?</strong></td><td>Airport-corridor and inner-east suburbs rank strongly — they reduce transfer friction while preserving amenity and tenant depth.</td></tr>
+          <tr><td><strong>What suits an immigrant household?</strong></td><td>Look for suburbs balancing rent level, family fit and access to transport/retail — rather than chasing CBD prestige.</td></tr>
+        </tbody>
+      </table>
+      <div class="footer-note">
+        Suburb-level metrics curated from public REIWA suburb pages. Airport access and suitability scores are analyst-built heuristics for portfolio storytelling, not official rankings. Planning feasibility depends on zoning, R-Codes, local scheme controls, servicing and site constraints.
+      </div>
+    </section>
+
+    <!-- 9 SCENARIO EXPLORER -->
+    <section class="card span-12">
+      <div class="card-label">09 — Scenario explorer</div>
+      <h2>Market Scenario Explorer</h2>
+      <p class="small">A scenario-based decision support tool — not a live prediction engine. Uses predefined market conditions and structured analyst reasoning to show how an advisory team might test different housing futures before making a recommendation.</p>
+      <div class="notice" style="margin-top:14px;">
+        <strong>How to read this:</strong> each scenario combines a possible market shock or policy change with the dashboard's evidence base. The output shows likely direction, key drivers, assumptions and practical implications for landowners, renters, buyers and investors.
+      </div>
+      <div class="scenario-layout" style="margin-top:16px;">
+        <div class="scenario-btns" id="scenarioButtons"></div>
+        <div class="scene-output" id="scenarioOutput"></div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<script>
+const suburbs = [{"suburb":"Redcliffe","median_price":855000,"median_rent":700,"sales_growth":15.5,"rental_growth":7.7,"population":4969,"station":"Airport corridor","airport_access":5,"cbd_access":18,"family":6,"amenity":6,"newcomer":7,"gross_yield":4.26,"fifo_score":69.5,"newcomer_score":43.4},{"suburb":"Belmont","median_price":874000,"median_rent":780,"sales_growth":21.4,"rental_growth":20.0,"population":6785,"station":"Bus/Airport corridor","airport_access":10,"cbd_access":20,"family":6,"amenity":6,"newcomer":6,"gross_yield":4.64,"fifo_score":66.1,"newcomer_score":39.6},{"suburb":"Cloverdale","median_price":835000,"median_rent":700,"sales_growth":16.0,"rental_growth":7.7,"population":8069,"station":"Airport corridor","airport_access":9,"cbd_access":21,"family":6,"amenity":6,"newcomer":7,"gross_yield":4.36,"fifo_score":67.3,"newcomer_score":43.6},{"suburb":"Cannington","median_price":758000,"median_rent":750,"sales_growth":26.2,"rental_growth":11.1,"population":5929,"station":"Cannington/Queens Park","airport_access":18,"cbd_access":24,"family":7,"amenity":8,"newcomer":8,"gross_yield":5.15,"fifo_score":66.7,"newcomer_score":48.2},{"suburb":"Victoria Park","median_price":1150000,"median_rent":760,"sales_growth":15.8,"rental_growth":4.1,"population":8777,"station":"Victoria Park","airport_access":22,"cbd_access":10,"family":6,"amenity":9,"newcomer":6,"gross_yield":3.44,"fifo_score":57.6,"newcomer_score":43.4},{"suburb":"East Perth","median_price":1720000,"median_rent":750,"sales_growth":8.5,"rental_growth":0.0,"population":10596,"station":"Claisebrook/McIver","airport_access":25,"cbd_access":5,"family":4,"amenity":10,"newcomer":5,"gross_yield":2.27,"fifo_score":52.0,"newcomer_score":35.6},{"suburb":"Armadale","median_price":637000,"median_rent":620,"sales_growth":12.7,"rental_growth":6.9,"population":13619,"station":"Armadale","airport_access":40,"cbd_access":45,"family":7,"amenity":5,"newcomer":9,"gross_yield":5.06,"fifo_score":50.1,"newcomer_score":49.4},{"suburb":"Ellenbrook","median_price":780000,"median_rent":710,"sales_growth":14.9,"rental_growth":1.9,"population":22681,"station":"Ellenbrook line catchment","airport_access":32,"cbd_access":35,"family":8,"amenity":6,"newcomer":8,"gross_yield":4.73,"fifo_score":53.4,"newcomer_score":47.8},{"suburb":"Baldivis","median_price":786000,"median_rent":670,"sales_growth":12.2,"rental_growth":3.1,"population":31653,"station":"Warnbro catchment","airport_access":55,"cbd_access":50,"family":9,"amenity":6,"newcomer":8,"gross_yield":4.43,"fifo_score":37.6,"newcomer_score":51.5}];
+
+let currentMode = 'investor';
+
+// Compute derived scores from raw suburb data
+suburbs.forEach(s => {
+  s.investor_score = +(s.sales_growth * 0.4 + s.gross_yield * 8 + s.amenity * 0.8).toFixed(1);
+  s.family_score   = +(s.family * 4 + s.amenity * 3 + s.newcomer * 3).toFixed(1);
+  s.growth_score   = +(s.sales_growth * 0.55 + ((900000 - s.median_price) / 50000) + s.rental_growth * 0.35 + s.amenity * 0.4).toFixed(1);
+});
+
+const scenarios = [
+  {id:'migration',title:'Sustained Migration Surge',subtitle:'Population growth stays elevated for 2+ years',kicker:'Demand-led pressure',outcome:'Upward pressure on both rents and sale prices would persist, with the strongest impacts in accessible middle-ring and airport-corridor suburbs where households can trade off cost and convenience.',drivers:['More households would be competing for a market where listings and completions are still catching up.','Rental demand would likely deepen first, then spill into first-home buyer and investor activity.','Suburbs with transport access and a broader mix of dwelling types would absorb demand faster.'],assumptions:['Net migration remains strong relative to the recent base period.','Approvals continue to improve, but completion timing stays lagged.','Interest rates do not rise sharply enough to suppress demand.'],implications:['Landowners: larger well-located infill sites become more strategic because product diversity matters more.','Renters and newcomers: affordability pressure intensifies, so value shifts toward outer and middle-ring trade-off suburbs.','Investors: vacancy stays supportive of income, but entry prices also rise.'],confidence:'Medium–high',evidence:['Population growth remains a primary demand driver.','Current rents are already elevated relative to incomes in several shortlisted suburbs.','The dashboard shows supply improving, but not yet enough to fully reset pressure.']},
+  {id:'rates',title:'Interest Rates Ease',subtitle:'Mortgage serviceability improves H2 2026',kicker:'Finance-led demand release',outcome:'Buying capacity would improve and could release delayed owner-occupier demand, especially for attached housing, townhouse product, and accessible suburbs just below inner-city price points.',drivers:['Lower borrowing costs improve affordability for financed buyers more quickly than they improve rental affordability.','Detached housing remains expensive, so some of the released demand would flow into units and infill stock.','Investor interest may also lift if yields remain acceptable while financing costs fall.'],assumptions:['Rate cuts are meaningful enough to change borrowing power.','Employment conditions remain supportive.','There is no sudden oversupply event in targeted submarkets.'],implications:['Developers: attached and mid-density product becomes more marketable to owner-occupiers.','Buyers: relative affordability windows may narrow quickly in mid-priced suburbs.','Renters: rental relief may be slower than expected if household formation remains strong.'],confidence:'Medium',evidence:['The dashboard already shows a structural affordability gap in several detached-house markets.','Unit and infill formats are positioned to capture buyers priced out of premium detached stock.','Rental pressure does not automatically unwind when finance conditions improve.']},
+  {id:'zoning',title:'Station-Precinct Zoning Uplift',subtitle:'Medium-density opportunities expand around transport',kicker:'Policy-led supply response',outcome:'The most strategic uplift would be on sites combining walkable access, workable lot dimensions, and proven local demand — favouring townhouse rows, duplex/triplex outcomes, and mixed infill rather than blanket densification.',drivers:['Planning change only converts to value where end-market depth and site efficiency support delivery.','Transport-linked precincts can support more diverse housing because they reduce household travel friction.','A wider set of compliant sites improves optionality for landowners and developers.'],assumptions:['Planning controls become more supportive in targeted precincts.','Construction feasibility remains workable.','Buyer and tenant demand continues to favour accessible locations.'],implications:['Landowners: access-first sites gain redevelopment relevance and optionality.','Developers: site screening should focus on frontage, servicing, and product-market fit, not just lot size.','Government: better housing diversity is possible, but delivery still depends on feasibility and timing.'],confidence:'Medium–high',evidence:['The site strategy module already weights proximity heavily because access improves density logic.','The ranked suburbs highlight the value of practical connectivity, not just prestige.','Policy support is most powerful when it aligns with proven demand and feasible site form.']},
+  {id:'newcomer',title:'Newcomer Affordability Squeeze',subtitle:'Rents rise faster than wages for new households',kicker:'Affordability-led reshuffle',outcome:'Newcomer households would likely widen their suburb search and prioritise locations where rent, transport access, and family liveability balance out. Purely inner-city options become less realistic unless household incomes are well above entry benchmarks.',drivers:['Rents in several accessible suburbs already sit above affordability thresholds for lower incomes.','Families and new migrants often value schools, retail access, and transport reliability alongside rent level.','Suburbs with moderate rents and acceptable access become the main adjustment valve.'],assumptions:['Wage growth does not keep pace with rent growth for new entrants.','Households continue to prefer access to employment nodes and services.','No large-scale rental supply shock suddenly eases competition.'],implications:['Advisory teams: suburb recommendations should focus on trade-offs, not cheapest-rent rankings.','Newcomers: places like Cannington, Ellenbrook, or Baldivis may become pragmatic options depending on household type.','Policy makers: affordability pressure becomes a settlement and inclusion issue, not just a property issue.'],confidence:'High',evidence:['The affordability chart already shows a clear gap between market rents and lower income thresholds.','The newcomer ranking favours suburbs that combine family fit with workable cost.','The dashboard narrative supports a trade-off framework rather than a single "best suburb".']},
+];
+
+/* ── CHART: MARKET STORY ── */
+function makeMarketStory() {
+  const trace1 = {
+    x:['Population growth','Vacancy rate'],
+    y:[2.4,2.2],
+    type:'bar',
+    name:'Rates (%)',
+    marker:{color:'#1a5ab8'},
+    hovertemplate:'%{x}: %{y}<extra></extra>'
+  };
+  const trace2 = {
+    x:['House price ($k)','Rent ($pw)','WA approvals Jan','Perth listings'],
+    y:[885,720,2410,3355],
+    type:'bar',
+    name:'Levels',
+    marker:{color:'#7fb3e8'},
+    yaxis:'y2',
+    hovertemplate:'%{x}: %{y}<extra></extra>'
+  };
+  const layout = {
+    margin:{l:42,r:42,t:10,b:40},
+    paper_bgcolor:'transparent', plot_bgcolor:'transparent',
+    yaxis:{title:'Rates (%)', gridcolor:'#dce6f2', zerolinecolor:'#dce6f2'},
+    yaxis2:{title:'Levels', overlaying:'y', side:'right', showgrid:false},
+    legend:{orientation:'h', y:1.15},
+    height:310, font:{family:'DM Sans, sans-serif', size:12, color:'#5a6e84'},
+    bargap:0.35
+  };
+  Plotly.newPlot('marketStory',[trace1,trace2],layout,{displayModeBar:false,responsive:true});
+}
+
+/* ── CHART: SCATTER ── */
+function renderScatter() {
+  const scoreMap = {
+    investor: 'investor_score',
+    growth:   'growth_score',
+    newcomer: 'newcomer_score',
+    family:   'family_score',
+    fifo:     'fifo_score'
+  };
+  const titleMap = {
+    investor: 'Investor score',
+    growth:   'Growth score',
+    newcomer: 'Newcomer suitability score',
+    family:   'Family livability score',
+    fifo:     'FIFO suitability score'
+  };
+  const metric = scoreMap[currentMode];
+  const trace = {
+    x: suburbs.map(s=>s.median_price),
+    y: suburbs.map(s=>s.median_rent),
+    text: suburbs.map(s=>s.suburb),
+    mode:'markers+text',
+    textposition:'top center',
+    textfont:{family:'DM Sans', size:11.5, color:'#0d1f35'},
+    marker:{
+      size: suburbs.map(s=>Math.max(18, s.sales_growth*1.4)),
+      color: suburbs.map(s=>s[metric]),
+      colorscale: [['0','#c5d9f5'],['1','#1a5ab8']],
+      sizemode:'diameter',
+      showscale: true,
+      line:{color:'#0d1f35', width:1},
+      colorbar:{title:{text:titleMap[currentMode], font:{size:11}}, thickness:12}
+    },
+    customdata: suburbs.map(s=>[
+      s.sales_growth, s.gross_yield, s.airport_access,
+      s.fifo_score, s.newcomer_score,
+      s.investor_score, s.family_score, s.growth_score
+    ]),
+    hovertemplate:'<b>%{text}</b><br>Median price: $%{x:,}<br>Median rent: $%{y}pw<br>Sales growth: %{customdata[0]}%<br>Gross yield: %{customdata[1]}%<br>Airport access: %{customdata[2]} min<br>Investor: %{customdata[5]}<br>Growth: %{customdata[7]}<br>Newcomer: %{customdata[4]}<br>Family: %{customdata[6]}<br>FIFO: %{customdata[3]}<extra></extra>'
+  };
+  const layout = {
+    margin:{l:62,r:60,t:20,b:55},
+    height:390,
+    xaxis:{title:'Median house price', tickprefix:'$', tickformat:',', gridcolor:'#dce6f2', zerolinecolor:'#dce6f2'},
+    yaxis:{title:'Median weekly rent ($/pw)', gridcolor:'#dce6f2', zerolinecolor:'#dce6f2'},
+    paper_bgcolor:'transparent', plot_bgcolor:'transparent',
+    font:{family:'DM Sans, sans-serif', size:12, color:'#5a6e84'}
+  };
+  Plotly.newPlot('suburbScatter',[trace],layout,{displayModeBar:false,responsive:true});
+}
+
+/* ── RANK TABLE ── */
+function renderRank() {
+  const scoreMap = {
+    investor: 'investor_score',
+    growth:   'growth_score',
+    newcomer: 'newcomer_score',
+    family:   'family_score',
+    fifo:     'fifo_score'
+  };
+  const introMap = {
+    investor: 'Top suburbs based on rental yield, growth, and demand depth.',
+    growth:   'Top suburbs with upside potential, momentum, and relative entry value.',
+    newcomer: 'Top suburbs balancing affordability, access, and everyday liveability.',
+    family:   'Top suburbs suitable for long-term family living, amenity, and practical cost.',
+    fifo:     'Top suburbs when the client values airport access, reasonable rents, and practical liveability.'
+  };
+  const metric = scoreMap[currentMode];
+  const items = [...suburbs].sort((a,b)=>b[metric]-a[metric]).slice(0,5);
+  document.getElementById('rankIntro').innerText = introMap[currentMode];
+  let html = '<table><thead><tr><th>#</th><th>Suburb</th><th>Score</th><th>Rent</th></tr></thead><tbody>';
+  items.forEach((s,i) => {
+    html += `<tr>
+      <td style="color:var(--muted);font-size:12px;">${i+1}</td>
+      <td><strong>${s.suburb}</strong><br><span class="small">${s.station}</span></td>
+      <td><span class="score-badge">${s[metric]}</span></td>
+      <td style="font-weight:600;">$${s.median_rent}<span style="font-weight:300;font-size:12px;">pw</span></td>
+    </tr>`;
+  });
+  html += '</tbody></table>';
+  document.getElementById('rankTable').innerHTML = html;
+}
+
+/* ── MODE SWITCH ── */
+function setMode(mode, el) {
+  currentMode = mode;
+  document.querySelectorAll('#lensButtons button').forEach(btn => btn.classList.remove('active'));
+  if (el) {
+    el.classList.add('active');
+  } else {
+    const defaultBtn = [...document.querySelectorAll('#lensButtons button')]
+      .find(btn => btn.textContent.toLowerCase().includes(mode));
+    if (defaultBtn) defaultBtn.classList.add('active');
+  }
+  renderScatter();
+  renderRank();
+}
+
+/* ── SITE STRATEGY ── */
+function updateSiteStrategy() {
+  const lot = +document.getElementById('lotSize').value;
+  const frontage = +document.getElementById('frontage').value;
+  const proximity = document.getElementById('proximity').value;
+  const objective = document.getElementById('objective').value;
+  document.getElementById('lotSizeVal').innerText = lot;
+  document.getElementById('frontageVal').innerText = frontage;
+
+  let strategy = '', rationale = [], risks = [];
+  if (lot < 350) {
+    strategy = 'Hold / refurbish existing dwelling, or pursue compact infill if planning supports it';
+    rationale.push('Lot size is tight, which constrains multi-dwelling yield.');
+  } else if (lot < 650) {
+    strategy = proximity==='inner' ? 'Duplex or townhouse-style infill' : 'Duplex / paired dwelling feasibility test';
+    rationale.push('Site size is large enough for modest product uplift without relying on a full apartment outcome.');
+  } else if (lot < 1000) {
+    strategy = proximity==='inner' ? 'Triplex / townhouse infill with higher end-use flexibility' : 'Triplex or subdivisional strategy';
+    rationale.push('This is a workable infill scale where access starts to matter a lot for resale and tenant demand.');
+  } else {
+    strategy = proximity==='inner' ? 'Higher-density feasibility review: townhouse row, apartment-lite or mixed typology' : 'Staged subdivision or family-product cluster';
+    rationale.push('Larger lots create optionality, especially when close to stations or centres.');
+  }
+
+  if (frontage >= 18) rationale.push('A broader frontage improves design efficiency, parking resolution and marketability.');
+  else risks.push('A narrow frontage may limit layout efficiency and add design friction.');
+  if (proximity==='inner') rationale.push('Being within an 800m walk catchment strengthens the case for density and transport-led demand.');
+  if (proximity==='outer') risks.push('More distant sites usually need stronger family-housing demand to compensate for lower transport advantage.');
+  if (objective==='yield') rationale.push('For yield-led owners, multi-dwelling or adaptable product usually outperforms a single premium dwelling.');
+  else if (objective==='growth') rationale.push('For growth-led owners, the best outcome is often the product most aligned with future buyer demand in that micro-market.');
+  else rationale.push('Balanced-return owners should preserve optionality between resale and retained rental stock.');
+
+  document.getElementById('recommendationBox').innerHTML = `
+    <p style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.09em;color:var(--blue);margin-bottom:8px;">Recommended first-pass strategy</p>
+    <div class="rec-headline">${strategy}</div>
+    <div class="rec-section"><strong>Why this screens well:</strong> ${rationale.join(' ')}</div>
+    <div class="rec-section"><strong>What to verify next:</strong> Zoning / R-Codes, local planning controls, servicing, setbacks, parking, slope, and end-market depth.</div>
+    <div class="rec-section"><strong>Potential friction:</strong> ${risks.length ? risks.join(' ') : 'No obvious red flag from this simple screen — but full site due diligence is still required.'}</div>
+  `;
+}
+
+/* ── CHART: OUTLOOK ── */
+function renderOutlook() {
+  const q = ['Q1 2026','Q2 2026','Q3 2026','Q4 2026'];
+  const data = [
+    {x:q, y:[885,905,940,974], mode:'lines+markers', name:'House median ($k)', line:{width:2.5,color:'#1a5ab8'}, marker:{size:6}},
+    {x:q, y:[630,660,705,735], mode:'lines+markers', name:'Unit median ($k)', line:{width:2.5,color:'#7fb3e8'}, marker:{size:6}},
+    {x:q, y:[720,722,727,732], mode:'lines+markers', name:'Dwelling rent ($pw)', yaxis:'y2', line:{width:2.5,color:'#0c7a6b', dash:'dot'}, marker:{size:6}}
+  ];
+  const layout = {
+    margin:{l:48,r:52,t:16,b:32},
+    height:330,
+    yaxis:{title:'Sale price ($k)', gridcolor:'#dce6f2', zerolinecolor:'#dce6f2'},
+    yaxis2:{title:'Rent ($pw)', overlaying:'y', side:'right', showgrid:false},
+    paper_bgcolor:'transparent', plot_bgcolor:'transparent',
+    legend:{orientation:'h', y:1.18},
+    font:{family:'DM Sans, sans-serif', size:12, color:'#5a6e84'}
+  };
+  Plotly.newPlot('outlookChart',data,layout,{displayModeBar:false,responsive:true});
+}
+
+/* ── CHART: AFFORDABILITY ── */
+function renderAffordability() {
+  const minAffordable = 0.3*948;
+  const avgAffordable = 0.3*2051.1;
+  const data = [
+    {x:suburbs.map(s=>s.suburb), y:suburbs.map(s=>s.median_rent), type:'bar', name:'Median weekly rent', marker:{color:'#7fb3e8'}},
+    {x:suburbs.map(s=>s.suburb), y:suburbs.map(s=>minAffordable), type:'scatter', mode:'lines', name:'30% of min wage', line:{dash:'dash',width:2,color:'#c9913a'}},
+    {x:suburbs.map(s=>s.suburb), y:suburbs.map(s=>avgAffordable), type:'scatter', mode:'lines', name:'30% of avg full-time earnings', line:{dash:'dot',width:2,color:'#0c7a6b'}}
+  ];
+  const layout = {
+    margin:{l:50,r:20,t:16,b:64},
+    height:330,
+    yaxis:{title:'Weekly rent / threshold ($)', gridcolor:'#dce6f2', zerolinecolor:'#dce6f2'},
+    paper_bgcolor:'transparent', plot_bgcolor:'transparent',
+    legend:{orientation:'h', y:1.2},
+    font:{family:'DM Sans, sans-serif', size:12, color:'#5a6e84'},
+    bargap:0.35
+  };
+  Plotly.newPlot('affordabilityChart',data,layout,{displayModeBar:false,responsive:true});
+}
+
+/* ── SCENARIO BUTTONS ── */
+function renderScenarioButtons() {
+  document.getElementById('scenarioButtons').innerHTML = scenarios.map((s,i) => `
+    <button class="scene-btn ${i===0?'active':''}" data-id="${s.id}" onclick="showScenario('${s.id}', this)">
+      <strong>${s.title}</strong>
+      <span>${s.subtitle}</span>
+    </button>
+  `).join('');
+}
+
+function showScenario(id, el) {
+  const s = scenarios.find(x=>x.id===id);
+  document.querySelectorAll('.scene-btn').forEach(b=>b.classList.remove('active'));
+  if (el) el.classList.add('active');
+  document.getElementById('scenarioOutput').innerHTML = `
+    <div class="scene-kicker">${s.kicker}</div>
+    <h3>${s.title}</h3>
+    <p class="outcome">${s.outcome}</p>
+    <div class="pills">
+      <span class="pill">Confidence: ${s.confidence}</span>
+      <span class="pill">Decision support</span>
+      <span class="pill">Predefined scenario</span>
+    </div>
+    <div class="scene-section"><strong>Key drivers</strong><ul>${s.drivers.map(d=>`<li>${d}</li>`).join('')}</ul></div>
+    <div class="scene-section"><strong>Assumptions</strong><ul>${s.assumptions.map(d=>`<li>${d}</li>`).join('')}</ul></div>
+    <div class="scene-section"><strong>Implications</strong><ul>${s.implications.map(d=>`<li>${d}</li>`).join('')}</ul></div>
+    <div class="scene-section"><strong>Evidence anchor</strong><ul>${s.evidence.map(d=>`<li>${d}</li>`).join('')}</ul></div>
+  `;
+}
+
+/* ── INIT ── */
+function initDashboard() {
+  renderScenarioButtons();
+  showScenario('migration', null);
+  makeMarketStory();
+  setMode('investor', null);
+  updateSiteStrategy();
+  renderOutlook();
+  renderAffordability();
+}
+</script>
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js" onload="initDashboard()"></script>
+</body>
+</html>
