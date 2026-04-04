@@ -130,7 +130,6 @@ Built by **Adwait Reddy** — Data Analyst & Data Science Graduate, Perth WA.
 
 - 🌐 [Live Dashboard](https://adwaitr27.github.io/WA-housing-dashboard/)
 - 📋 [Research Report](https://www.notion.so/337efa52acd881918ec0d359106bd837)
-- 💼 Built as a portfolio piece for a Research Analyst role at [Urbis](https://www.urbis.com.au/)
 
 ---
 
